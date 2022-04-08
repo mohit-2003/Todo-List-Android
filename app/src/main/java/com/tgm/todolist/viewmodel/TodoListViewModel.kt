@@ -7,7 +7,7 @@ import com.tgm.todolist.model.TodoListModel
 class TodoListViewModel: ViewModel() {
     var todoList = MutableLiveData<ArrayList<TodoListModel>>()
 
-    fun addTask(){
-
+    fun addTask(todoListModel: TodoListModel){
+        todoList.value?.add(todoListModel)
     }
 }

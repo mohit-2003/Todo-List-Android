@@ -9,6 +9,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tgm.todolist.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -28,9 +29,8 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Todo Item Add", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        binding.addTaskFab.setOnClickListener {
+            navController.navigate(R.id.action_MainFragment_to_AddTaskFragment)
         }
     }
 

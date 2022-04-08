@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.tgm.todolist.R
 import com.tgm.todolist.model.TodoListModel
+import com.tgm.todolist.viewmodel.TodoListViewModel
 
 class TodoListAdapter(private val arrayList: ArrayList<TodoListModel>,
-        private val context: Context): RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
+        private val context: Context, private val onClick: onItemClicked): RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
 //    private lateinit var binding: TodoItemDesignBinding
 
@@ -28,11 +30,22 @@ class TodoListAdapter(private val arrayList: ArrayList<TodoListModel>,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = arrayList[position].title
         holder.dropDownIcon.setOnClickListener {
-            Toast.makeText(context, "on Working...", Toast.LENGTH_SHORT).show()
+            onClick.onDropDown()
         }
     }
 
     override fun getItemCount(): Int {
         return arrayList.size
+    }
+
+    fun updateList(list: ArrayList<TodoListModel>){
+        arrayList.clear()
+        arrayList.addAll(list)
+        notifyDataSetChanged()
+    }
+    interface onItemClicked {
+        fun onDropDown();
+        fun onDelete();
+        fun onPin();
     }
 }
