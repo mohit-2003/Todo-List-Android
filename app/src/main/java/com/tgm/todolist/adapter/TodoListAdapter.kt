@@ -28,6 +28,9 @@ class TodoListAdapter(private val arrayList: ArrayList<Notes>,
         holder.optionMenu.setOnClickListener {
             onClick.onOptionMenuClicked(arrayList[position], position)
         }
+        holder.itemView.setOnClickListener {
+            onClick.onItemClicked(arrayList[position], position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -42,5 +45,6 @@ class TodoListAdapter(private val arrayList: ArrayList<Notes>,
 
     interface onItemClicked {
         fun onOptionMenuClicked(notes: Notes, position: Int)
+        fun onItemClicked(notes: Notes, position: Int)
     }
 }

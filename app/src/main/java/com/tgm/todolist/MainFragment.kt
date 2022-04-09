@@ -72,18 +72,12 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
                         Toast.makeText(requireContext(), "Item Deleted..", Toast.LENGTH_SHORT).show()
                         return true
                     }
-                    // in the same way you can implement others
+
                     R.id.edit_item -> {
-                        // define
-                        val addTaskViewModel = ViewModelProvider(requireActivity())[AddTaskViewModel::class.java]
-                        addTaskViewModel.currentNotes.value = notes
-                        val navHostFragment =
-                            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
-                                    as NavHostFragment
-                        val navController: NavController = navHostFragment.navController
-                        navController.navigate(R.id.action_MainFragment_to_AddTaskFragment)
+                        goToAddNotesFragment(notes)
                         return true
                     }
+
                     R.id.pin_item -> {
                         Toast.makeText(requireContext(), "Item Pinned..", Toast.LENGTH_SHORT).show()
                         return true
@@ -97,5 +91,20 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
             }
         })
         popupMenu.show()
+    }
+
+    override fun onItemClicked(notes: Notes, position: Int) {
+        goToAddNotesFragment(notes)
+    }
+
+    private fun goToAddNotesFragment(notes: Notes){
+        val addTaskViewModel = ViewModelProvider(requireActivity())[AddTaskViewModel::class.java]
+        addTaskViewModel.currentNotes.value = notes
+
+        val navHostFragment =
+            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+                    as NavHostFragment
+        val navController: NavController = navHostFragment.navController
+        navController.navigate(R.id.action_MainFragment_to_AddTaskFragment)
     }
 }
