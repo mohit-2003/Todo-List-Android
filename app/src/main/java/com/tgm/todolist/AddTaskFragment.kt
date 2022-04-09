@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.tgm.todolist.databinding.FragmentAddTaskBinding
 import com.tgm.todolist.room.NotesDatabase
@@ -27,18 +28,39 @@ class AddTaskFragment : Fragment() {
 
         _binding = FragmentAddTaskBinding.inflate(inflater, container, false)
 
-
         val application = requireNotNull(this.activity).application
-        val dao = NotesDatabase.getInstance(application).notesDAO
-        val viewModelFactory = NotesDBViewModelFactory(dao, application)
-        val NotesDBViewModel = ViewModelProvider(this, viewModelFactory)[NotesDBViewModel::class.java]
+        val viewModelFactory = NotesDBViewModelFactory(application)
+        val viewModel = ViewModelProvider(this, viewModelFactory)[NotesDBViewModel::class.java]
 
         binding.addNowBtn.setOnClickListener {
-            NotesDBViewModel.insertNotes(Notes(title = binding.titleOfTodo.editText?.text.toString(),
-            description = binding.descOfTodo.editText?.text.toString(), addedTime = ""))
+            if (checkValidity()) {
+                clearInputBox()
+                viewModel.insertNotes(
+                    Notes(
+                        title = binding.titleOfTodo.editText?.text.toString(),
+                        description = binding.descOfTodo.editText?.text.toString(), addedTime = ""
+                    )
+                )
+                Toast.makeText(requireContext(), "Added Successfully...", Toast.LENGTH_SHORT).show()
+            }
         }
-        return binding.root
 
+        return binding.root
+    }
+
+    private fun checkValidity(): Boolean {
+        if (binding.titleOfTodo.editText?.text.toString() == ""){
+            binding.titleOfTodo.isErrorEnabled = true
+            return false
+        }
+        return true
+    }
+
+    private fun clearInputBox() {
+        binding.titleOfTodo.editText?.text?.clear()
+        binding.descOfTodo.editText?.text?.clear()
+
+        binding.descOfTodo.clearFocus()
     }
 
     override fun onDestroyView() {

@@ -39,7 +39,7 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
 
         val application = requireNotNull(this.activity).application
         val viewModelFactory = NotesDBViewModelFactory(application)
-        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[viewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[NotesDBViewModel::class.java]
 
         binding.todoListRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         adapter = TodoListAdapter(ArrayList(), requireContext(), this)
