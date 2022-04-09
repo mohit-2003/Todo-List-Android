@@ -2,48 +2,47 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-    </data>
-
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/todo_list_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textSize="18sp"
-                android:layout_weight="0.9"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/drop_down_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:text="@string/app_name"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/option_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_weight="0.1"
-                android:src="@drawable/ic_baseline_arrow_drop_down_24"
-                android:layout_gravity="end" />
+                android:gravity="end"
+                android:text="⋮"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textStyle="bold" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <!--    <TextView-->
-        <!--        android:id="@+id/desc"-->
-        <!--        android:layout_width="wrap_content"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:text="@string/app_name"-->
-        <!--        android:textSize="18sp"-->
-        <!--        android:textStyle="bold"/>-->
+<!--        <TextView-->
+<!--            android:id="@+id/desc"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/notes_description"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold" />-->
 
     </com.google.android.material.card.MaterialCardView>
 </layout>

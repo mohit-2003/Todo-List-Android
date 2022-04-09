@@ -12,4 +12,9 @@
     <string name="add_now">Add Now</string>
     <string name="enter_todo_title">Enter Todo Work</string>
     <string name="describe_todo_work">Describe about your task…</string>
+    <string name="notes_description">Notes Description</string>
+    <string name="delete_item">Delete Item</string>
+    <string name="edit_item">Edit Item</string>
+    <string name="pin_item">Pin Item</string>
+    <string name="expend_it">Expend it</string>
 </resources>

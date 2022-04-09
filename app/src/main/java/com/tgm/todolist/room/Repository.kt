@@ -13,6 +13,8 @@ class Repository(private val dao: NotesDAO) {
 
     suspend fun update(notes: Notes) = dao.update(notes)
 
+    suspend fun deleteById(id: Long) = dao.deleteById(id)
+
     fun getAllNotes(): LiveData<List<Notes>> = dao.getAllNotes()
 
 }

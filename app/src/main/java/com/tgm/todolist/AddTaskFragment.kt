@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.tgm.todolist.databinding.FragmentAddTaskBinding
 import com.tgm.todolist.room.NotesDatabase
 import com.tgm.todolist.room.entity.Notes
+import com.tgm.todolist.viewmodel.AddTaskViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModelFactory
 
@@ -27,20 +28,24 @@ class AddTaskFragment : Fragment() {
     ): View? {
 
         _binding = FragmentAddTaskBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
 
         val application = requireNotNull(this.activity).application
         val viewModelFactory = NotesDBViewModelFactory(application)
+        // for database operations
         val viewModel = ViewModelProvider(this, viewModelFactory)[NotesDBViewModel::class.java]
+        // for layout (set data)
+        binding.addTaskViewModel = ViewModelProvider(requireActivity())[AddTaskViewModel::class.java]
 
         binding.addNowBtn.setOnClickListener {
             if (checkValidity()) {
-                clearInputBox()
                 viewModel.insertNotes(
                     Notes(
                         title = binding.titleOfTodo.editText?.text.toString(),
                         description = binding.descOfTodo.editText?.text.toString(), addedTime = ""
                     )
                 )
+                clearInputBox()
                 Toast.makeText(requireContext(), "Added Successfully...", Toast.LENGTH_SHORT).show()
             }
         }

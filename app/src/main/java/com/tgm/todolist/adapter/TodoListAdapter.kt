@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tgm.todolist.R
@@ -17,7 +16,7 @@ class TodoListAdapter(private val arrayList: ArrayList<Notes>,
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
        val title: TextView = itemView.findViewById(R.id.todo_list_title)
-       val dropDownIcon: ImageView = itemView.findViewById(R.id.drop_down_icon)
+       val optionMenu: TextView = itemView.findViewById(R.id.option_menu)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,8 +25,8 @@ class TodoListAdapter(private val arrayList: ArrayList<Notes>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = arrayList[position].title
-        holder.dropDownIcon.setOnClickListener {
-            onClick.onDropDown()
+        holder.optionMenu.setOnClickListener {
+            onClick.onOptionMenuClicked(arrayList[position], position)
         }
     }
 
@@ -38,12 +37,10 @@ class TodoListAdapter(private val arrayList: ArrayList<Notes>,
     fun updateList(list: ArrayList<Notes>){
         arrayList.clear()
         arrayList.addAll(list)
-        notifyItemRangeChanged(0, list.size)
+        notifyDataSetChanged()
     }
 
     interface onItemClicked {
-        fun onDropDown();
-        fun onDelete();
-        fun onPin();
+        fun onOptionMenuClicked(notes: Notes, position: Int)
     }
 }

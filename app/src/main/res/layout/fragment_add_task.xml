@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="todoListViewModel"
-            type="com.tgm.todolist.viewmodel.NotesDBViewModel" />
+            name="addTaskViewModel"
+            type="com.tgm.todolist.viewmodel.AddTaskViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/enter_todo_title"
+                android:text="@{String.valueOf(addTaskViewModel.currentNotes.title)}"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -47,6 +48,7 @@
                 android:layout_height="match_parent"
                 android:hint="@string/describe_todo_work"
                 android:gravity="start"
+                android:text="@{String.valueOf(addTaskViewModel.currentNotes.description)}"
                 android:inputType="textMultiLine" />
 
         </com.google.android.material.textfield.TextInputLayout>

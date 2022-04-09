@@ -1,20 +1,23 @@
 package com.tgm.todolist
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.lifecycle.Observer
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tgm.todolist.adapter.TodoListAdapter
 import com.tgm.todolist.databinding.FragmentMainBinding
-import com.tgm.todolist.room.NotesDatabase
 import com.tgm.todolist.room.entity.Notes
+import com.tgm.todolist.viewmodel.AddTaskViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModelFactory
 
@@ -57,15 +60,42 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
         _binding = null
     }
 
-    override fun onDropDown() {
-        Toast.makeText(requireContext(), "Clicked..", Toast.LENGTH_SHORT).show()
-    }
+    override fun onOptionMenuClicked(notes: Notes, position: Int) {
+        val popupMenu = PopupMenu(requireContext(), binding.todoListRecyclerView[position].findViewById(R.id.option_menu))
+        popupMenu.inflate(R.menu.item_popup_menu)
 
-    override fun onDelete() {
-        Toast.makeText(requireContext(), "Clicked..", Toast.LENGTH_SHORT).show()
-    }
+        popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener{
+            override fun onMenuItemClick(item: MenuItem?): Boolean {
+                when(item?.itemId){
+                    R.id.delete_item -> {
+                        viewModel.deleteNotesById(notes.id)
+                        Toast.makeText(requireContext(), "Item Deleted..", Toast.LENGTH_SHORT).show()
+                        return true
+                    }
+                    // in the same way you can implement others
+                    R.id.edit_item -> {
+                        // define
+                        val addTaskViewModel = ViewModelProvider(requireActivity())[AddTaskViewModel::class.java]
+                        addTaskViewModel.currentNotes.value = notes
+                        val navHostFragment =
+                            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+                                    as NavHostFragment
+                        val navController: NavController = navHostFragment.navController
+                        navController.navigate(R.id.action_MainFragment_to_AddTaskFragment)
+                        return true
+                    }
+                    R.id.pin_item -> {
+                        Toast.makeText(requireContext(), "Item Pinned..", Toast.LENGTH_SHORT).show()
+                        return true
+                    }
 
-    override fun onPin() {
-        Toast.makeText(requireContext(), "Clicked..", Toast.LENGTH_SHORT).show()
+                    R.id.expend_item -> {
+                        return true
+                    }
+                }
+                return false
+            }
+        })
+        popupMenu.show()
     }
 }
