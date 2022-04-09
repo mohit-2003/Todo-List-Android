@@ -6,7 +6,7 @@
     <data>
         <variable
             name="todoListViewModel"
-            type="com.tgm.todolist.viewmodel.TodoListViewModel" />
+            type="com.tgm.todolist.viewmodel.NotesDBViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

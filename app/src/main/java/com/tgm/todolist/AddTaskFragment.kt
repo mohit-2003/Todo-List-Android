@@ -6,14 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.tgm.todolist.databinding.FragmentAddTaskBinding
-import com.tgm.todolist.model.TodoListModel
-import com.tgm.todolist.viewmodel.TodoListViewModel
+import com.tgm.todolist.room.NotesDatabase
+import com.tgm.todolist.room.entity.Notes
+import com.tgm.todolist.viewmodel.NotesDBViewModel
+import com.tgm.todolist.viewmodel.NotesDBViewModelFactory
 
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class AddTaskFragment : Fragment() {
 
     private var _binding: FragmentAddTaskBinding? = null
@@ -21,7 +19,6 @@ class AddTaskFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private lateinit var viewModel: TodoListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,23 +26,19 @@ class AddTaskFragment : Fragment() {
     ): View? {
 
         _binding = FragmentAddTaskBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[TodoListViewModel::class.java]
+
+
+        val application = requireNotNull(this.activity).application
+        val dao = NotesDatabase.getInstance(application).notesDAO
+        val viewModelFactory = NotesDBViewModelFactory(dao, application)
+        val NotesDBViewModel = ViewModelProvider(this, viewModelFactory)[NotesDBViewModel::class.java]
 
         binding.addNowBtn.setOnClickListener {
-            viewModel.addTask(TodoListModel(binding.titleOfTodo.editText?.text.toString(),
-                binding.descOfTodo.editText?.text.toString()))
+            NotesDBViewModel.insertNotes(Notes(title = binding.titleOfTodo.editText?.text.toString(),
+            description = binding.descOfTodo.editText?.text.toString(), addedTime = ""))
         }
-
         return binding.root
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        binding.buttonSecond.setOnClickListener {
-//            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-//        }
     }
 
     override fun onDestroyView() {

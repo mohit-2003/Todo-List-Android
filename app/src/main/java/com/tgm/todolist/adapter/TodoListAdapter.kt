@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.tgm.todolist.R
-import com.tgm.todolist.model.TodoListModel
-import com.tgm.todolist.viewmodel.TodoListViewModel
+import com.tgm.todolist.room.entity.Notes
 
-class TodoListAdapter(private val arrayList: ArrayList<TodoListModel>,
+class TodoListAdapter(private val arrayList: ArrayList<Notes>,
         private val context: Context, private val onClick: onItemClicked): RecyclerView.Adapter<TodoListAdapter.ViewHolder>() {
 
 //    private lateinit var binding: TodoItemDesignBinding
@@ -38,11 +35,12 @@ class TodoListAdapter(private val arrayList: ArrayList<TodoListModel>,
         return arrayList.size
     }
 
-    fun updateList(list: ArrayList<TodoListModel>){
+    fun updateList(list: ArrayList<Notes>){
         arrayList.clear()
         arrayList.addAll(list)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, list.size)
     }
+
     interface onItemClicked {
         fun onDropDown();
         fun onDelete();

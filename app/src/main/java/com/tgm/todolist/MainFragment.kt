@@ -1,24 +1,23 @@
 package com.tgm.todolist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tgm.todolist.adapter.TodoListAdapter
 import com.tgm.todolist.databinding.FragmentMainBinding
-import com.tgm.todolist.model.TodoListModel
-import com.tgm.todolist.viewmodel.TodoListViewModel
+import com.tgm.todolist.room.NotesDatabase
+import com.tgm.todolist.room.entity.Notes
+import com.tgm.todolist.viewmodel.NotesDBViewModel
+import com.tgm.todolist.viewmodel.NotesDBViewModelFactory
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
 
     private var _binding: FragmentMainBinding? = null
@@ -27,9 +26,8 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val list: ArrayList<TodoListModel> = ArrayList()
-    private lateinit var viewModel: TodoListViewModel
     lateinit var adapter: TodoListAdapter
+    lateinit var viewModel: NotesDBViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,30 +35,21 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
     ): View? {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[TodoListViewModel::class.java]
+        binding.lifecycleOwner = this
 
-//        list.clear()
-//        list.add(TodoListModel("Sample Title 1", ""))
-//        list.add(TodoListModel("Sample Title 2", ""))
-//        list.add(TodoListModel("Sample Title 3", ""))
-//        list.add(TodoListModel("Sample Title 4", ""))
-//        list.add(TodoListModel("Sample Title 5", ""))
+        val application = requireNotNull(this.activity).application
+        val viewModelFactory = NotesDBViewModelFactory(application)
+        viewModel = ViewModelProvider(requireActivity(), viewModelFactory)[viewModel::class.java]
 
-        viewModel.todoList.value = list
         binding.todoListRecyclerView.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        adapter = TodoListAdapter(list, requireContext(), this)
+        adapter = TodoListAdapter(ArrayList(), requireContext(), this)
         binding.todoListRecyclerView.adapter = adapter
 
-        return binding.root
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.todoList.observe(requireActivity()) {
-//            adapter.updateList(it)
+        viewModel.getAllNotes().observe(requireActivity()) {
+            adapter.updateList(it as ArrayList<Notes>)
         }
+
+        return binding.root
     }
 
     override fun onDestroyView() {
