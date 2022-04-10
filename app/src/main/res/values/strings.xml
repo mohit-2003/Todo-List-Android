@@ -17,4 +17,8 @@
     <string name="update_now">Update Now</string>
     <string name="sample_time">April 10, 2022 10:06 AM</string>
     <string name="date_format">MMMM dd, yyyy HH:mm a</string>
+    <string name="not_available">Not Available</string>
+    <string name="feels_lonely_here">Feels Lonely Here</string>
+    <string name="you_haven_t_added_any_notes_yet">You haven\'t added any notes yet.</string>
+    <string name="tap_the_icon_to_add_notes">Tap the + icon to add notes</string>
 </resources>

@@ -17,6 +17,13 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/todo_item_design"/>
 
+        <include
+            android:id="@+id/not_available_lyt"
+            layout="@layout/not_available_lyt"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_width="match_parent"/>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_task_fab"
             android:layout_width="wrap_content"

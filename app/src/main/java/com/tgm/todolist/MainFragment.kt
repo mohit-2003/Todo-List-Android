@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.view.get
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -35,7 +36,7 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
@@ -48,7 +49,14 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
         adapter = TodoListAdapter(ArrayList(), requireContext(), this)
         binding.todoListRecyclerView.adapter = adapter
 
-        viewModel.getAllNotes().observe(requireActivity()) {
+        viewModel.getAllNotes().observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                binding.notAvailableLyt.visibility = View.VISIBLE
+                binding.todoListRecyclerView.visibility = View.GONE
+            } else {
+                binding.todoListRecyclerView.visibility = View.VISIBLE
+                binding.notAvailableLyt.visibility = View.GONE
+            }
             adapter.updateList(it as ArrayList<Notes>)
         }
 
