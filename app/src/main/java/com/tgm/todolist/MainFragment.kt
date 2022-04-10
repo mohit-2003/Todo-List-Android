@@ -52,6 +52,11 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
             adapter.updateList(it as ArrayList<Notes>)
         }
 
+        binding.addTaskFab.setOnClickListener {
+            // empty object
+           goToAddNotesFragment(Notes(id = -1, title = "", description = "", addedTime = ""))
+        }
+
         return binding.root
     }
 
@@ -80,10 +85,6 @@ class MainFragment : Fragment(), TodoListAdapter.onItemClicked {
 
                     R.id.pin_item -> {
                         Toast.makeText(requireContext(), "Item Pinned..", Toast.LENGTH_SHORT).show()
-                        return true
-                    }
-
-                    R.id.expend_item -> {
                         return true
                     }
                 }

@@ -18,9 +18,4 @@
         android:title="@string/pin_item"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/expend_item"
-        android:icon="@drawable/ic_baseline_preview_24"
-        android:title="@string/expend_it"
-        app:showAsAction="never" />
 </menu>

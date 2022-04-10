@@ -17,4 +17,6 @@
     <string name="edit_item">Edit Item</string>
     <string name="pin_item">Pin Item</string>
     <string name="expend_it">Expend it</string>
+    <string name="share_notes_as_text">Share Notes as Text</string>
+    <string name="update_now">Update Now</string>
 </resources>

@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/enter_todo_title"
-                android:text="@{String.valueOf(addTaskViewModel.currentNotes.title)}"
+                android:text="@{addTaskViewModel.currentNotes.title}"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -48,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:hint="@string/describe_todo_work"
                 android:gravity="start"
-                android:text="@{String.valueOf(addTaskViewModel.currentNotes.description)}"
+                android:text="@{addTaskViewModel.currentNotes.description}"
                 android:inputType="textMultiLine" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -60,6 +60,7 @@
             android:layout_height="wrap_content"
             android:text="@string/add_now"
             android:textSize="16sp"
+            android:enabled="@{addTaskViewModel.currentNotes.title == &quot;&quot; &amp;&amp; addTaskViewModel.currentNotes.description == &quot;&quot;}"
             android:layout_margin="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
