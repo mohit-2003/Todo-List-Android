@@ -1,18 +1,20 @@
 package com.tgm.todolist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tgm.todolist.databinding.FragmentAddTaskBinding
-import com.tgm.todolist.room.NotesDatabase
 import com.tgm.todolist.room.entity.Notes
 import com.tgm.todolist.viewmodel.AddTaskViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class AddTaskFragment : Fragment() {
 
@@ -84,16 +86,43 @@ class AddTaskFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.edit_item -> {
-                binding.addNowBtn.text = getString(R.string.update_now)
-                binding.addNowBtn.isEnabled = true
+                if (!binding.addNowBtn.isEnabled){
+                    item.icon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_baseline_close_24)
+                    binding.addNowBtn.text = getString(R.string.update_now)
+                    binding.addNowBtn.isEnabled = true
+                } else {
+                    item.icon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_baseline_edit_24)
+                    binding.addNowBtn.text = getString(R.string.add_now)
+                    binding.addNowBtn.isEnabled = false
+                }
                 return true
             }
             R.id.share_item_as_text -> {
-
+                shareNotes()
                 return true
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun shareNotes() {
+        val title = addTaskViewModel.currentNotes.value?.title
+        val description = addTaskViewModel.currentNotes.value?.description
+
+        val intent = Intent(Intent.ACTION_SEND)
+        val shareBody = "$title\n$description"
+        intent.type = "text/plain"
+        intent.putExtra(
+            Intent.EXTRA_SUBJECT,
+            getString(R.string.my_notes)
+        )
+        intent.putExtra(Intent.EXTRA_TEXT, shareBody)
+        startActivity(
+            Intent.createChooser(
+                intent,
+                "Share via"
+            )
+        )
     }
 
     private fun checkValidity(): Boolean {
