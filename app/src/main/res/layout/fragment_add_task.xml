@@ -14,6 +14,16 @@
         android:layout_height="match_parent"
         tools:context=".AddTaskFragment">
 
+        <TextView
+            android:id="@+id/added_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{addTaskViewModel.currentNotes.addedTime}"
+            android:layout_margin="16dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/title_of_todo"
             android:layout_width="match_parent"
@@ -22,7 +32,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/added_time">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

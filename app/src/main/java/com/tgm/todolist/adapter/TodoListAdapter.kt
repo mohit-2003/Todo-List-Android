@@ -17,6 +17,8 @@ class TodoListAdapter(private val arrayList: ArrayList<Notes>,
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
        val title: TextView = itemView.findViewById(R.id.todo_list_title)
        val optionMenu: TextView = itemView.findViewById(R.id.option_menu)
+       val addedTime: TextView = itemView.findViewById(R.id.added_time)
+       val description: TextView = itemView.findViewById(R.id.todo_list_description)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,6 +27,11 @@ class TodoListAdapter(private val arrayList: ArrayList<Notes>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.title.text = arrayList[position].title
+        holder.addedTime.text = arrayList[position].addedTime
+        if (arrayList[position].description != "")
+            holder.description.text = arrayList[position].description
+        else
+            holder.description.visibility = View.GONE
         holder.optionMenu.setOnClickListener {
             onClick.onOptionMenuClicked(arrayList[position], position)
         }

@@ -11,6 +11,8 @@ import com.tgm.todolist.room.entity.Notes
 import com.tgm.todolist.viewmodel.AddTaskViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModel
 import com.tgm.todolist.viewmodel.NotesDBViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddTaskFragment : Fragment() {
 
@@ -36,6 +38,7 @@ class AddTaskFragment : Fragment() {
         val viewModel = ViewModelProvider(this, viewModelFactory)[NotesDBViewModel::class.java]
         // for layout (set data)
         addTaskViewModel = ViewModelProvider(requireActivity())[AddTaskViewModel::class.java]
+        addTaskViewModel.currentNotes.value?.addedTime = getCurrentTime()
         binding.addTaskViewModel = addTaskViewModel
 
         binding.addNowBtn.setOnClickListener {
@@ -45,7 +48,7 @@ class AddTaskFragment : Fragment() {
                     Notes(id = addTaskViewModel.currentNotes.value?.id ?: -1L,
                         title = binding.titleOfTodo.editText?.text.toString(),
                         description = binding.descOfTodo.editText?.text.toString(),
-                        addedTime = ""
+                        addedTime = addTaskViewModel.currentNotes.value?.addedTime.toString()
                     )
                 )
                 Toast.makeText(requireContext(), "Updated Successfully...", Toast.LENGTH_SHORT)
@@ -57,7 +60,7 @@ class AddTaskFragment : Fragment() {
                         Notes(
                             title = binding.titleOfTodo.editText?.text.toString(),
                             description = binding.descOfTodo.editText?.text.toString(),
-                            addedTime = ""
+                            addedTime = addTaskViewModel.currentNotes.value?.addedTime.toString()
                         )
                     )
                     clearInputBox()
@@ -107,6 +110,11 @@ class AddTaskFragment : Fragment() {
         binding.descOfTodo.editText?.text?.clear()
 
         binding.descOfTodo.clearFocus()
+    }
+
+    private fun getCurrentTime(): String {
+        val dateFormat = SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH)
+        return dateFormat.format(Date())
     }
 
     override fun onDestroyView() {
